@@ -1,0 +1,26 @@
+@import "reset-css";
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+:root {
+  --primary: #e0e4e8;
+  --secondary: #f0f2f3;
+  --btn-primary: #024eee;
+  --btn-primary-hover: #003ad6;
+}
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  h1 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  p {
+    font-size: 14px;
+  }
+  .menu {
+    font-weight: 600;
+  }
+  input {
+    margin: 0;
+  }
+}

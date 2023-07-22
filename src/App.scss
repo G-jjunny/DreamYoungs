@@ -1,0 +1,28 @@
+.main-container {
+  display: flex;
+  .btn {
+    background-color: inherit;
+    border: none;
+    padding: 0;
+  }
+  .btn-primary {
+    font-size: 14px;
+    color: #ffffff;
+    background-color: var(--btn-primary);
+    padding: 8px 24px;
+    border-radius: 5px;
+  }
+  .btn-primary:hover {
+    background-color: var(--btn-primary-hover);
+  }
+  .input-info {
+    padding: 5px 12px;
+    border: 1px solid #dedede;
+    border-radius: 5px;
+    width: 160px;
+    height: 34px;
+  }
+  .input-info:focus {
+    border: 1px solid var(--btn-primary);
+  }
+}
