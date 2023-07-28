@@ -87,9 +87,9 @@ function InfoForm({ formattedInfoData }) {
     }
   }, [infoFormData.info6]);
 
-  useEffect(() => {
-    console.log("in infoform", infoFormData);
-  }, [infoFormData]);
+  // useEffect(() => {
+  //   // console.log("in infoform", infoFormData);
+  // }, [infoFormData]);
 
   const handleSubmit = async (e) => {
     // 기본동작 가드

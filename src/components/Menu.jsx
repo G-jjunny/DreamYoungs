@@ -5,7 +5,7 @@ import DropArrowInactive from "../icons/DropArrowInactive";
 import UpArrow from "../icons/UpArrow";
 import UpArrowInactive from "../icons/UpArrowInactive";
 import MenuItem from "./MenuItem";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 const MenuItems = styled.div`
   margin-top: 20px;
 
@@ -14,10 +14,17 @@ const MenuItems = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: #565656;
     .menu {
       display: inline-block;
-      color: #565656;
     }
+  }
+  .menu-title.active {
+    background-color: #e0e4e8;
+    color: #333;
+  }
+  .menu-title.text {
+    color: #333;
   }
   .menu-title:hover {
     background-color: var(--secondary);
@@ -32,7 +39,7 @@ const MenuItems = styled.div`
 `;
 
 // Menu를 컴포넌트화 시킴
-function Menu({ formattedInfoData1, formattedInfoData2 }) {
+function Menu({ formattedInfoData1, formattedInfoData2, isActive }) {
   // useState를 이용해서 메뉴토글 상태관리
   const [isFold, setIsfold] = useState(false);
 
@@ -40,19 +47,32 @@ function Menu({ formattedInfoData1, formattedInfoData2 }) {
     setIsfold(!isFold);
   };
   useEffect(() => {
-    console.log(formattedInfoData1);
-    console.log(formattedInfoData2);
-  }, [formattedInfoData1, formattedInfoData2]);
+    console.log(isActive);
+    // console.log(formattedInfoData1);
+    // console.log(formattedInfoData2);
+  }, [formattedInfoData1, formattedInfoData2, isActive]);
 
   return (
-    <MenuItems
-      isActive={formattedInfoData1.isActive || formattedInfoData2.isActive}
-    >
-      <div className="menu-title">
+    <MenuItems>
+      <div
+        className={`menu-title ${
+          isFold && isActive === "active"
+            ? "active"
+            : isActive === "active"
+            ? "text"
+            : ""
+        }`}
+      >
         <p className="menu">대메뉴</p>
         <button className="btn" onClick={handleFold}>
           {isFold ? (
-            <DropArrowInactive className="icon" />
+            isActive === "active" ? (
+              <DropArrow className="icon" />
+            ) : (
+              <DropArrowInactive className="icon" />
+            )
+          ) : isActive === "active" ? (
+            <UpArrow className="icon" />
           ) : (
             <UpArrowInactive className="icon" />
           )}
