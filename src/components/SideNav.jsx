@@ -9,11 +9,19 @@ const NavContain = styled.div`
 `;
 
 // 좌측 sideNav menu 컴포넌트
-function SideNav() {
+function SideNav({ formattedInfoData }) {
   return (
     <NavContain>
-      <Menu />
-      <Menu />
+      {/* id 1, 2값 전달 */}
+      <Menu
+        formattedInfoData1={formattedInfoData[1]}
+        formattedInfoData2={formattedInfoData[2]}
+      />
+      {/* id 3, 4값 전달 */}
+      <Menu
+        formattedInfoData1={formattedInfoData[3]}
+        formattedInfoData2={formattedInfoData[4]}
+      />
     </NavContain>
   );
 }

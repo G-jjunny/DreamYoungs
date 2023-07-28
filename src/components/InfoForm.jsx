@@ -1,4 +1,6 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 const InfoContainer = styled.div`
@@ -15,125 +17,202 @@ const InfoContainer = styled.div`
       width: 140px;
       margin-right: 64px;
     }
-    .info-radio {
-      display: flex;
-      flex-direction: column;
-      margin: 16px 0;
-      gap: 12px;
-      .radio-group {
-        display: flex;
-        align-items: center;
-        p {
-          margin-right: 32px;
-          margin-left: 8px;
-        }
-      }
-      .selected-text {
-        font-size: 12px;
-        color: #f03738;
-      }
+  }
+`;
+const InfoRadio = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 16px 0;
+  gap: 12px;
+  .radio-group {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    p {
+      margin-right: 32px;
+      margin-left: 8px;
     }
+  }
+  .selected-text {
+    font-size: 12px;
+    color: var(--main-red);
   }
 `;
 
 // main컴포넌트의 정보가 담긴 form
 function InfoForm({ formattedInfoData }) {
-  // info5번 상태관리
-  const [checkedInfo5, setCheckedInfo5] = useState(formattedInfoData.info5);
-  // date 상태관리
-  const [date, setDate] = useState(formattedInfoData.date);
+  const [infoFormData, setInfoFormData] = useState({});
 
-  // 변경되는 date value
-  const handleDateChange = (e) => {
-    setDate(e.target.value);
-  };
-
-  // 변경되는 info5번 value
-  const handleRadioChange = (e) => {
-    setCheckedInfo5(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    // 여기서 선택된 값(checkedInfo5)을 서버에 전송하거나 다른 작업을 수행할 수 있습니다.
-    e.preventDefault(); // 기본 동작 가드
-  };
+  // inforForm 초기값 formattedInfoData
+  // formattedInfoData가 바뀔때마다 리렌더
   useEffect(() => {
-    setCheckedInfo5(formattedInfoData.info5);
-    setDate(formattedInfoData.date);
+    setInfoFormData(formattedInfoData);
   }, [formattedInfoData]);
+
+  // input 값 변경 관리
+  const inputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+
+    // input type이 checkbox일 경우에는 배열로 선택된 값을 관리
+    if (type === "checkbox") {
+      if (checked) {
+        // 체크박스가 체크되었을 때, 해당 value 값을 배열에 추가
+        setInfoFormData((prevData) => ({
+          ...prevData,
+          [name]: [...(prevData[name] || []), value],
+        }));
+      } else {
+        // 체크박스가 해제되었을 때, 해당 value 값을 배열에서 제거
+        setInfoFormData((prevData) => ({
+          ...prevData,
+          [name]: (prevData[name] || []).filter((val) => val !== value),
+        }));
+      }
+    } else {
+      setInfoFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+  // 화면이 렌더시 초기 info6번 값에 따른 checkbox 상태
+  useEffect(() => {
+    if (infoFormData.info6 && Array.isArray(infoFormData.info6)) {
+      const checkboxes = document.querySelectorAll(
+        'input[type="checkbox"][name="info6"]'
+      );
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = infoFormData.info6.includes(checkbox.value);
+      });
+    }
+  }, [infoFormData.info6]);
+
+  useEffect(() => {
+    console.log("in infoform", infoFormData);
+  }, [infoFormData]);
+
+  const handleSubmit = async (e) => {
+    // 기본동작 가드
+    e.preventDefault();
+    try {
+      const apiUrl = "https://api-jobtest.json2bot.chat/test";
+      const response = await axios.post(apiUrl, infoFormData);
+      console.log(response);
+      alert("전송에 성공하였습니다.");
+    } catch (error) {
+      // API 요청 실패 시 오류 처리
+      alert("API 요청 오류: 다시 시도해주세요", error.message);
+    }
+  };
+
   return (
     <>
       <InfoContainer>
         <div className="info">
           <p className="info-text">정보1</p>
-          <p>{formattedInfoData.info1}</p>
+          <p>{infoFormData.info1}</p>
         </div>
         <div className="info">
           <p className="info-text">정보2</p>
           <input
             type="text"
             className="input-info"
-            placeholder={`${formattedInfoData.info2}`}
+            name="info2"
+            value={infoFormData.info2 || ""}
+            onChange={inputChange}
           />
         </div>
         <div className="info">
           <p className="info-text">정보3</p>
-          <p>{formattedInfoData.info3}</p>
+          <p>{infoFormData.info3}</p>
         </div>
         <div className="info">
           <p className="info-text">정보4</p>
           <input
             type="text"
             className="input-info"
-            placeholder={`${formattedInfoData.info4}`}
+            name="info4"
+            value={infoFormData.info4 || ""}
+            onChange={inputChange}
           />
         </div>
         <div className="info">
           <p className="info-text">날짜</p>
           <input
             type="date"
+            name="date"
             className="input-info"
-            value={date}
-            onChange={handleDateChange}
+            onChange={inputChange}
+            value={infoFormData.date || ""}
           />
         </div>
         <div className="info">
           <p className="info-text">정보5</p>
-          <div className="info-radio">
+          {/* 여기 radio group부분 styled-components 따로 분류 (코드가 너무 길어짐) */}
+          <InfoRadio>
             <div className="radio-group">
               <input
                 type="radio"
                 name="info5"
                 value="선택1"
-                checked={checkedInfo5 === "선택1"}
-                onChange={handleRadioChange}
+                className="radio"
+                checked={infoFormData.info5 === "선택1"}
+                onChange={inputChange}
               />
               <p>선택1</p>
               <input
                 type="radio"
                 name="info5"
                 value="선택2"
-                checked={checkedInfo5 === "선택2"}
-                onChange={handleRadioChange}
+                className="radio"
+                checked={infoFormData.info5 === "선택2"}
+                onChange={inputChange}
               />
               <p>선택2</p>
               <input
                 type="radio"
                 name="info5"
                 value="선택3"
-                checked={checkedInfo5 === "선택3"}
-                onChange={handleRadioChange}
+                className="radio"
+                checked={infoFormData.info5 === "선택3"}
+                onChange={inputChange}
               />
               <p>선택3</p>
             </div>
-            {checkedInfo5 === "선택3" ? (
+            {infoFormData.info5 === "선택3" ? (
               <p className="selected-text">* 선택시 텍스트가 표시됩니다</p>
             ) : null}
-            {/* <p className="selected-text">* {`${checkedInfo5}`}</p> */}
-          </div>
+          </InfoRadio>
         </div>
         <div className="info">
           <p className="info-text">정보6</p>
+          <InfoRadio>
+            <div className="radio-group">
+              <input
+                type="checkbox"
+                name="info6"
+                value="선택1"
+                onChange={inputChange}
+              />
+              <label>
+                <p>선택1</p>
+              </label>
+              <input
+                type="checkbox"
+                name="info6"
+                value="선택2"
+                onChange={inputChange}
+              />
+              <p>선택2</p>
+              <input
+                type="checkbox"
+                name="info6"
+                value="선택3"
+                onChange={inputChange}
+              />
+              <p>선택3</p>
+            </div>
+          </InfoRadio>
         </div>
       </InfoContainer>
       <button

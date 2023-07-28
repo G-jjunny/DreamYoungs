@@ -5,11 +5,14 @@
   --primary: #e0e4e8;
   --secondary: #f0f2f3;
   --btn-primary: #024eee;
+  --btn-secondary: #dbe1fd;
   --btn-primary-hover: #003ad6;
+  --main-red: #f03738;
 }
 
 body {
   font-family: "Noto Sans KR", sans-serif;
+  color: #333;
   h1 {
     font-size: 24px;
     font-weight: bold;
@@ -20,7 +23,14 @@ body {
   .menu {
     font-weight: 600;
   }
-  input {
-    margin: 0;
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  a.active {
+    .item {
+      background-color: #e0e4e8;
+      color: #333;
+    }
   }
 }

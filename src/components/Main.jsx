@@ -4,7 +4,6 @@ import InfoForm from "./InfoForm";
 const MainContainer = styled.div`
   width: 100%;
   padding: 0 40px 0 40px;
-  /* background-color: aliceblue; */
   .title {
     margin: 32px 0 32px 0;
   }

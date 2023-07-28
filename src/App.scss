@@ -4,6 +4,8 @@
     background-color: inherit;
     border: none;
     padding: 0;
+    margin: 0;
+    align-items: center;
   }
   .btn-primary {
     font-size: 14px;
@@ -11,18 +13,77 @@
     background-color: var(--btn-primary);
     padding: 8px 24px;
     border-radius: 5px;
+    transition: 0.5s;
   }
   .btn-primary:hover {
     background-color: var(--btn-primary-hover);
+    transition: 0.5s;
   }
+
+  // input스타일
   .input-info {
     padding: 5px 12px;
     border: 1px solid #dedede;
     border-radius: 5px;
-    width: 160px;
-    height: 34px;
+    width: 136px;
+    height: 24px;
   }
   .input-info:focus {
-    border: 1px solid var(--btn-primary);
+    outline-style: none;
+    border: 3px solid var(--btn-secondary);
+    box-shadow: inset 0 0 0 1px var(--btn-primary);
+    padding: 5px 10px;
+  }
+  [type="radio"] {
+    vertical-align: middle;
+    appearance: none;
+    border: 1px solid #dedede;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+  }
+  [type="radio"]:hover {
+    border: 1px solid #bebebe;
+    cursor: pointer;
+  }
+  [type="radio"]:checked {
+    border: 5px solid var(--btn-primary);
+  }
+
+  [type="checkbox"] {
+    vertical-align: middle;
+    appearance: none;
+    // accent-color: var(--btn-primary);
+    border: 1px solid #dedede;
+    border-radius: 4px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+  [type="checkbox"]::before {
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    content: "";
+    display: none;
+    height: 40%;
+    left: 40%;
+    position: relative;
+    top: 20%;
+    transform: rotate(45deg);
+    width: 15%;
+  }
+
+  [type="checkbox"]:hover {
+    border: 1px solid #bebebe;
+  }
+  [type="checkbox"]:checked {
+    background-color: var(--btn-primary);
+    background-image: url("./icons/checked.png");
+    background-position: center;
+    background-size: contain;
+  }
+  [type="date"] {
+    position: relative; // 캘린더 아이콘을 클릭해야만 달력이 보이기 때문에 이 영역 자체를 제어하기 위해 설정
+    background: none;
   }
 }
